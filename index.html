@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gmail & Password Manager</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 1s ease;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #5a67d8;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #434190;
+    }
+
+    .output {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Gmail & Password Manager</h1>
+    <input type="email" id="gmail" placeholder="Enter Gmail" />
+    <input type="password" id="password" placeholder="Enter Password" />
+    <button onclick="saveData()">Save</button>
+
+    <div class="output" id="output"></div>
+  </div>
+
+  <script>
+    function saveData() {
+      const gmail = document.getElementById("gmail").value;
+      const password = document.getElementById("password").value;
+
+      if (gmail && password) {
+        const data = { gmail, password };
+        localStorage.setItem("gmail_password_data", JSON.stringify(data));
+        showData();
+        document.getElementById("gmail").value = "";
+        document.getElementById("password").value = "";
+      } else {
+        alert("Please enter both Gmail and Password.");
+      }
+    }
+
+    function showData() {
+      const data = localStorage.getItem("gmail_password_data");
+      const output = document.getElementById("output");
+      if (data) {
+        const parsed = JSON.parse(data);
+        output.innerHTML = `
+          <strong>Saved Gmail:</strong> ${parsed.gmail}<br/>
+          <strong>Saved Password:</strong> ${parsed.password}
+        `;
+      } else {
+        output.innerHTML = "No data saved yet.";
+      }
+    }
+
+    // Show saved data on page load
+    window.onload = showData;
+  </script>
+</body>
+</html>
